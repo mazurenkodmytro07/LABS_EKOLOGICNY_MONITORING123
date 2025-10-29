@@ -1,0 +1,11 @@
+{
+  "name": "Київ-Центр",
+  "city": "Київ",
+  "latitude": 50.4501,
+  "longitude": 30.5234,
+  "measurement_types": ["pm25", "pm10", "no2", "temp", "hum"]
+}
+
+{
+  "active": false
+}

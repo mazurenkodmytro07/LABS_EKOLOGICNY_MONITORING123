@@ -1,0 +1,277 @@
+:root {
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --brand: #2563eb;
+  --brand-50: #e8f0ff;
+  --danger: #ef4444;
+  --danger-50: #fee2e2;
+  --success: #10b981;
+  --radius: 14px;
+  --shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter;
+}
+
+h1 {
+  font-size: 42px;
+  letter-spacing: 0.4px;
+  margin: 0 0 18px;
+}
+
+h3 {
+  margin: 0 0 12px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 34px auto;
+  padding: 0 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.section {
+  padding: 18px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toolbar .spacer {
+  margin-left: auto;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn.primary {
+  border-color: var(--brand);
+  background: var(--brand-50);
+}
+
+.btn.danger {
+  border-color: var(--danger);
+  background: var(--danger-50);
+}
+
+.input {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 10px;
+  padding: 9px 12px;
+  min-width: 260px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--brand);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  text-align: left;
+  font-weight: 700;
+  padding: 12px;
+  background: #eef2f7;
+  border-bottom: 1px solid var(--border);
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody tr:hover {
+  background: #fafbff;
+}
+
+.table .actions {
+  white-space: nowrap;
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #cdebd9;
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.badge.off {
+  border-color: #fbd5d5;
+  background: #fef2f2;
+  color: #7f1d1d;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 10px 14px;
+}
+
+.form .full {
+  grid-column: 1 / -1;
+}
+
+.form .row {
+  display: contents;
+}
+
+.form label {
+  padding-top: 8px;
+  color: #334;
+  font-weight: 600;
+}
+
+.form input {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+
+.form .controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.mtop {
+  margin-top: 18px;
+}
+
+.error {
+  color: var(--danger);
+  margin: 10px 0;
+}
+
+body.ua {
+  --bg: #0047ab;
+  --card: #ffd700;
+  --text: #001845;
+  --muted: #333;
+  --border: #003080;
+  --brand: #ffd700;
+  --brand-50: #ffeb80;
+  --danger: #c62828;
+  --danger-50: #ffcccc;
+  --success: #2e7d32;
+}
+
+body.ua {
+  background: linear-gradient(180deg, #0057b7 0%, #ffd700 100%) fixed;
+  color: var(--text);
+}
+
+body.ua .card {
+  background: var(--card);
+  border: 3px solid #003580;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+}
+
+body.ua .toolbar {
+  background: linear-gradient(90deg, #0057b7 0%, #ffd700 100%);
+  border: 2px solid #003580;
+  border-radius: 16px;
+  color: #001845;
+  padding: 12px 16px;
+}
+
+body.ua .toolbar h1 {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+body.ua .btn {
+  border: 2px solid #003580;
+  color: #001845;
+  background: #fff;
+  font-weight: 700;
+}
+
+body.ua .btn.primary {
+  background: #ffd700;
+  border-color: #0047ab;
+  color: #001845;
+}
+
+body.ua .btn.danger {
+  background: #ff8a80;
+  border-color: #c62828;
+}
+
+body.ua .table thead th {
+  background: #0047ab;
+  color: #fff;
+  border-bottom: 3px solid #ffd700;
+}
+
+body.ua .table tbody tr:nth-child(even) {
+  background: #fffbea;
+}
+
+body.ua .table tbody tr:hover {
+  background: #ffe766;
+}
+
+body.ua .badge:not(.off) {
+  background: #00ff91;
+  border: 2px solid #006b3f;
+  color: #003300;
+}
+
+body.ua .badge.off {
+  background: #ffbdbd;
+  border: 2px solid #900;
+  color: #500;
+}
+
+.city-flag {
+  margin-left: 8px;
+  font-size: 22px;
+}
