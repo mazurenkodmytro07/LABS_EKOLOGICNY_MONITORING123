@@ -1,0 +1,12 @@
+[
+  { "stationId": "seed-lviv",   "datetime": "2024-01-01T00:00:00.000Z", "pm25": 35, "pm10": 80,  "no2": 40,  "so2": 20,  "o3": 60  },
+  { "stationId": "seed-lviv",   "datetime": "2024-01-01T12:00:00.000Z", "pm25": 55, "pm10": 120, "no2": 90,  "so2": 30,  "o3": 110 },
+  { "stationId": "seed-odesa",  "datetime": "2024-01-02T00:00:00.000Z", "pm25": 25, "pm10": 60,  "no2": 35,  "so2": 15,  "o3": 50  },
+  { "stationId": "seed-odesa",  "datetime": "2024-01-02T12:00:00.000Z", "pm25": 70, "pm10": 140, "no2": 150, "so2": 60,  "o3": 130 },
+  { "stationId": "seed-dnipro", "datetime": "2024-01-03T00:00:00.000Z", "pm25": 45, "pm10": 90,  "no2": 70,  "so2": 25,  "o3": 80  },
+  { "stationId": "seed-dnipro", "datetime": "2024-01-03T12:00:00.000Z", "pm25": 80, "pm10": 160, "no2": 200, "so2": 80,  "o3": 150 },
+  { "stationId": "seed-kharkiv","datetime": "2024-01-04T00:00:00.000Z", "pm25": 30, "pm10": 70,  "no2": 45,  "so2": 18,  "o3": 65  },
+  { "stationId": "seed-kharkiv","datetime": "2024-01-04T12:00:00.000Z", "pm25": 90, "pm10": 180, "no2": 220, "so2": 95,  "o3": 170 },
+  { "stationId": "seed-kyiv",   "datetime": "2024-01-05T00:00:00.000Z", "pm25": 40, "pm10": 85,  "no2": 60,  "so2": 22,  "o3": 75  },
+  { "stationId": "seed-kyiv",   "datetime": "2024-01-05T12:00:00.000Z", "pm25": 65, "pm10": 130, "no2": 140, "so2": 55,  "o3": 140 }
+]

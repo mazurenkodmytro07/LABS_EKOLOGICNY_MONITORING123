@@ -1,0 +1,27 @@
+{
+  "pm25": {
+    "label": "PM2.5",
+    "limit": 75,
+    "unit": "µg/m³"
+  },
+  "pm10": {
+    "label": "PM10",
+    "limit": 150,
+    "unit": "µg/m³"
+  },
+  "no2": {
+    "label": "NO₂",
+    "limit": 200,
+    "unit": "µg/m³"
+  },
+  "so2": {
+    "label": "SO₂",
+    "limit": 100,
+    "unit": "µg/m³"
+  },
+  "o3": {
+    "label": "O₃",
+    "limit": 160,
+    "unit": "µg/m³"
+  }
+}

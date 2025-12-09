@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import stationsRouter from "./routes/stations.routes.js";
-import measRouter from "./routes/meas.routes.js";
+
+import airIndexRouter from "./routes/airindex.routes.js";
 import { notFound } from "./middlewares/notFound.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
@@ -13,11 +13,10 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.get("/api/health", (req, res) => {
-  res.json({ success: true, data: "OK (lab1)" });
+  res.json({ success: true, data: "OK (lab3 air-index)" });
 });
 
-app.use("/api/stations", stationsRouter);
-app.use("/api/meas", measRouter);
+app.use("/api/air-index", airIndexRouter);
 
 app.use(notFound);
 app.use(errorHandler);

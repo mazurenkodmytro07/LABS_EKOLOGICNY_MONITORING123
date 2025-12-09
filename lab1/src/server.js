@@ -1,17 +1,17 @@
-import http from 'http';
-import app from './app.js';
-import { connectDB } from './config/db.js';
-import { env } from './config/env.js';
+import { PORT } from "./config/env.js";
+import { connectDB } from "./config/db.js";
+import app from "./app.js";
 
-const server = http.createServer(app);
-
-connectDB()
-  .then(() => {
-    server.listen(env.PORT, () => {
-      console.log(`Server running on http://localhost:${env.PORT}`);
+async function start() {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Lab1 API listening on http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error('Mongo connection failed', err);
+  } catch (err) {
+    console.error("Failed to start server:", err);
     process.exit(1);
-  });
+  }
+}
+
+start();

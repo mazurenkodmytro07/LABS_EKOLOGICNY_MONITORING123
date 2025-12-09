@@ -1,14 +1,12 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
-  createMeasurement, listMeasurements, getMeasurement, updateMeasurement, deleteMeasurement
-} from '../controllers/meas.controller.js';
+  listMeasurements,
+  createMeasurement,
+} from "../controllers/means.controller.js";
 
 const router = Router();
 
-router.get('/', listMeasurements);
-router.post('/', createMeasurement);
-router.get('/:id', getMeasurement);
-router.put('/:id', updateMeasurement);
-router.delete('/:id', deleteMeasurement);
+router.get("/", listMeasurements);
+router.post("/", createMeasurement);
 
 export default router;

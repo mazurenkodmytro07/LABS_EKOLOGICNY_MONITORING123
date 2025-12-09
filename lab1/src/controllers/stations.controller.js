@@ -1,46 +1,76 @@
-import Station from '../models/Station.js';
-
-export async function createStation(req, res, next) {
-  try {
-    const station = await Station.create(req.body);
-    res.status(201).json({ success: true, data: station });
-  } catch (e) { next(e); }
-}
+import Station from "../models/Station.js";
 
 export async function listStations(req, res, next) {
   try {
-    const { city, active, limit = 50, offset = 0 } = req.query;
-    const filter = {};
-    if (city) filter.city = city;
-    if (active !== undefined) filter.active = active === 'true';
-    const data = await Station.find(filter)
-      .skip(Number(offset)).limit(Number(limit)).sort({ createdAt: -1 });
-    res.json({ success: true, data });
-  } catch (e) { next(e); }
+    const stations = await Station.find().sort({ city: 1, name: 1 });
+    res.json({ success: true, data: stations });
+  } catch (err) {
+    next(err);
+  }
 }
 
-export async function getStation(req, res, next) {
+export async function createStation(req, res, next) {
   try {
-    const station = await Station.findById(req.params.id);
-    if (!station) return res.status(404).json({ success: false, error: 'Station not found' });
-    res.json({ success: true, data: station });
-  } catch (e) { next(e); }
+    const body = req.body;
+
+    const station = await Station.create({
+      city: body.city,
+      name: body.name,
+      latitude: body.latitude,
+      longitude: body.longitude,
+      active: body.active ?? true,
+    });
+
+    res.status(201).json({ success: true, data: station });
+  } catch (err) {
+    next(err);
+  }
 }
 
 export async function updateStation(req, res, next) {
   try {
+    const { id } = req.params;
+    const body = req.body;
+
     const station = await Station.findByIdAndUpdate(
-      req.params.id, req.body, { new: true, runValidators: true }
+      id,
+      {
+        city: body.city,
+        name: body.name,
+        latitude: body.latitude,
+        longitude: body.longitude,
+        active: body.active ?? true,
+      },
+      { new: true }
     );
-    if (!station) return res.status(404).json({ success: false, error: 'Station not found' });
+
+    if (!station) {
+      return res.status(404).json({
+        success: false,
+        message: "Станцію не знайдено",
+      });
+    }
+
     res.json({ success: true, data: station });
-  } catch (e) { next(e); }
+  } catch (err) {
+    next(err);
+  }
 }
 
 export async function deleteStation(req, res, next) {
   try {
-    const station = await Station.findByIdAndDelete(req.params.id);
-    if (!station) return res.status(404).json({ success: false, error: 'Station not found' });
-    res.json({ success: true, data: { _id: station._id } });
-  } catch (e) { next(e); }
+    const { id } = req.params;
+
+    const station = await Station.findByIdAndDelete(id);
+    if (!station) {
+      return res.status(404).json({
+        success: false,
+        message: "Станцію не знайдено",
+      });
+    }
+
+    res.json({ success: true, data: { _id: id } });
+  } catch (err) {
+    next(err);
+  }
 }

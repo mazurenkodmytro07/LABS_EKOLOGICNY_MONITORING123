@@ -1,97 +1,115 @@
-import mongoose from 'mongoose';
-import 'dotenv/config.js';
-import Station from '../src/models/Station.js';
-import Measurement from '../src/models/Measurement.js';
-
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/eco_lab1';
-
-function rand(min, max, digits = 1) {
-  const n = Math.random() * (max - min) + min;
-  return Number(n.toFixed(digits));
-}
-
-function isoMinusHours(h) {
-  const d = new Date();
-  d.setHours(d.getHours() - h);
-  return d.toISOString();
-}
+import "dotenv/config";
+import mongoose from "mongoose";
+import { MONGODB_URI } from "../src/config/env.js";
+import Station from "../src/models/Station.js";
 
 async function run() {
-  console.log('Підключення до бази...');
-  await mongoose.connect(uri, {});
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log("Mongo connected");
 
-  await Measurement.deleteMany({});
-  await Station.deleteMany({});
-  console.log('Попередні дані видалено');
+    await Station.deleteMany({});
 
-  const stations = await Station.insertMany([
-    {
-      name: 'Київ-Центр',
-      city: 'Київ',
-      latitude: 50.4501,
-      longitude: 30.5234,
-      measurement_types: ['pm25', 'pm10', 'no2', 'temp', 'hum'],
-    },
-    {
-      name: 'Львів-Сихів',
-      city: 'Львів',
-      latitude: 49.8397,
-      longitude: 24.0297,
-      measurement_types: ['pm25', 'pm10', 'so2', 'temp', 'hum'],
-    },
-    {
-      name: 'Харків-Північний',
-      city: 'Харків',
-      latitude: 49.9935,
-      longitude: 36.2304,
-      measurement_types: ['pm25', 'pm10', 'no2', 'o3', 'temp', 'hum'],
-    },
-    {
-      name: 'Одеса-Порт',
-      city: 'Одеса',
-      latitude: 46.4825,
-      longitude: 30.7233,
-      measurement_types: ['pm25', 'pm10', 'so2', 'temp', 'hum'],
-    },
-    {
-      name: 'Дніпро-Центр',
-      city: 'Дніпро',
-      latitude: 48.467,
-      longitude: 35.04,
-      measurement_types: ['pm25', 'pm10', 'no2', 'temp', 'hum'],
-    }
-  ]);
+    const stations = await Station.insertMany([
+      {
+        city: "Львів",
+        name: "Львів-Сихів",
+        latitude: 49.8397,
+        longitude: 24.0297,
+      },
+      {
+        city: "Одеса",
+        name: "Одеса-Порт",
+        latitude: 46.4825,
+        longitude: 30.7233,
+      },
+      {
+        city: "Дніпро",
+        name: "Дніпро-Центр",
+        latitude: 48.467,
+        longitude: 35.04,
+      },
+      {
+        city: "Харків",
+        name: "Харків-Північний",
+        latitude: 49.9935,
+        longitude: 36.2304,
+      },
+      {
+        city: "Київ",
+        name: "Київ-Центр",
+        latitude: 50.4501,
+        longitude: 30.5234,
+      },
+      {
+        city: "Львів",
+        name: "Львів-Центр",
+        latitude: 49.8420,
+        longitude: 24.0316,
+      },
+      {
+        city: "Львів",
+        name: "Львів-Личаків",
+        latitude: 49.8383,
+        longitude: 24.0645,
+      },
+      {
+        city: "Київ",
+        name: "Київ-Троєщина",
+        latitude: 50.5133,
+        longitude: 30.6034,
+      },
+      {
+        city: "Київ",
+        name: "Київ-Оболонь",
+        latitude: 50.5081,
+        longitude: 30.4983,
+      },
+      {
+        city: "Харків",
+        name: "Харків-Індустріальний",
+        latitude: 49.9469,
+        longitude: 36.3894,
+      },
+      {
+        city: "Одеса",
+        name: "Одеса-Аркадія",
+        latitude: 46.4316,
+        longitude: 30.7608,
+      },
+      {
+        city: "Дніпро",
+        name: "Дніпро-Проспект",
+        latitude: 48.4648,
+        longitude: 35.0462,
+      },
+      {
+        city: "Запоріжжя",
+        name: "Запоріжжя-Центр",
+        latitude: 47.8388,
+        longitude: 35.1396,
+      },
+      {
+        city: "Вінниця",
+        name: "Вінниця-Центр",
+        latitude: 49.2328,
+        longitude: 28.4810,
+      },
+      {
+        city: "Тернопіль",
+        name: "Тернопіль-Центр",
+        latitude: 49.5535,
+        longitude: 25.5948,
+      },
+    ]);
 
-  console.log(`Створено станції: ${stations.map(s => s.city).join(', ')}`);
-
-  const docs = [];
-  for (const s of stations) {
-    for (let h = 24; h >= 1; h--) {
-      const base = {
-        station_id: s._id,
-        timestamp: isoMinusHours(h),
-        temp: rand(5, 25, 1),
-        hum: rand(40, 90, 0),
-      };
-
-      if (s.measurement_types.includes('pm25')) base.pm25 = rand(5, 50, 1);
-      if (s.measurement_types.includes('pm10')) base.pm10 = rand(10, 80, 1);
-      if (s.measurement_types.includes('no2')) base.no2 = rand(5, 70, 1);
-      if (s.measurement_types.includes('o3')) base.o3 = rand(10, 120, 1);
-      if (s.measurement_types.includes('so2')) base.so2 = rand(2, 40, 1);
-
-      docs.push(base);
-    }
+    console.log("Seeded stations:", stations.length);
+  } catch (err) {
+    console.error("Seed error:", err);
+  } finally {
+    await mongoose.disconnect();
+    process.exit(0);
   }
-
-  await Measurement.insertMany(docs);
-  console.log(`Вставлено вимірювань: ${docs.length}`);
-
-  await mongoose.disconnect();
-  console.log('Seed завершено успішно');
 }
 
-run().catch(err => {
-  console.error('Помилка seed:', err);
-  process.exit(1);
-});
+run();

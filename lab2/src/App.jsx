@@ -7,6 +7,9 @@ import {
 } from "./components/api";
 import StationTable from "./components/StationTable";
 import StationForm from "./components/StationForm";
+import AirIndexModal from "./components/AirIndexModal";
+import LimitsModal from "./components/LimitsModal";
+import { t, getInitialLang } from "./components/i18n";
 
 export default function App() {
   const [stations, setStations] = useState([]);
@@ -16,18 +19,31 @@ export default function App() {
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const [uaMode, setUaMode] = useState(() => localStorage.getItem("uaMode") === "1");
+  const [uaMode, setUaMode] = useState(
+    () => localStorage.getItem("uaMode") === "1"
+  );
+
+  const [lang, setLang] = useState(getInitialLang);
+
+
+  const [airStation, setAirStation] = useState(null);
+  const [showLimits, setShowLimits] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle("ua", uaMode);
     localStorage.setItem("uaMode", uaMode ? "1" : "0");
   }, [uaMode]);
 
+  useEffect(() => {
+    localStorage.setItem("lang", lang);
+  }, [lang]);
+
   const loadStations = () => {
     setLoading(true);
+    setErr("");
     return getStations()
       .then((r) => setStations(r.data.data))
-      .catch(() => setErr("API недоступне. Перевір бекенд."))
+      .catch(() => setErr(t(lang, "apiError")))
       .finally(() => setLoading(false));
   };
 
@@ -56,53 +72,68 @@ export default function App() {
   };
 
   const onSave = async (payload) => {
-    if (editing) await updateStation(editing._id, payload);
-    else await addStation(payload);
+    if (editing) {
+      await updateStation(editing._id, payload);
+    } else {
+      await addStation(payload);
+    }
     setShowForm(false);
     setEditing(null);
     await loadStations();
   };
 
   const onDelete = async (id) => {
-    if (!confirm("Видалити станцію?")) return;
+    if (!confirm(t(lang, "confirmDelete"))) return;
     await deleteStation(id);
     await loadStations();
   };
 
+  const openAirIndex = (station) => setAirStation(station);
+  const closeAirIndex = () => setAirStation(null);
+
+  const toggleLang = () => setLang((cur) => (cur === "ua" ? "en" : "ua"));
+
   return (
     <div className="container">
-      <div className="toolbar">
-        <h1 style={{ margin: 0 }}>Станції</h1>
+      <div className="toolbar card section">
+        <h1 className="toolbar-title">{t(lang, "title")}</h1>
 
-        <button className="btn" onClick={loadStations}>
-          🔄 Оновити
-        </button>
+        <div className="toolbar-row">
+          <button className="btn toolbar-btn" onClick={loadStations}>
+            {t(lang, "refreshBtn")}
+          </button>
 
-        <button className="btn primary" onClick={startCreate}>
-          ➕ Додати станцію
-        </button>
+          <button className="btn primary toolbar-btn" onClick={startCreate}>
+            {t(lang, "addStationBtn")}
+          </button>
 
-        <div className="spacer" />
+          <input
+            className="input toolbar-search"
+            placeholder={t(lang, "searchPlaceholder")}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button
+            className="btn toolbar-btn"
+            onClick={() => setUaMode((v) => !v)}
+            aria-pressed={uaMode}
+            >
+            ⚡ {uaMode ? t(lang, "powerOn") : t(lang, "powerOff")}
+          </button>
+          <button className="btn toolbar-btn" onClick={toggleLang}>
+            {t(lang, "langLabel")}
+          </button>
 
-        <input
-          className="input"
-          placeholder="Пошук по місту або назві…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <button
-          className="btn"
-          onClick={() => setUaMode((v) => !v)}
-          title="Потужний стиль"
-          aria-pressed={uaMode}
-          style={{ fontWeight: 700 }}
-        >
-          {uaMode ? "⚡ Потужний стиль: ВКЛ" : "⚡ Потужний стиль: ВИКЛ"}
-        </button>
+          <button
+            className="btn toolbar-btn"
+            onClick={() => setShowLimits(true)}
+          >
+            ⚙️ {t(lang, "limitsBtn")}
+          </button>
+        </div>
       </div>
 
-      {loading && <div className="card section">Завантаження…</div>}
+      {loading && <div className="card section">{t(lang, "loading")}</div>}
       {err && <div className="card section error">{err}</div>}
 
       {!loading && !err && (
@@ -111,7 +142,9 @@ export default function App() {
             stations={filtered}
             onEdit={startEdit}
             onDelete={onDelete}
+            onAirIndex={openAirIndex}
             ua={uaMode}
+            lang={lang}
           />
 
           {showForm && (
@@ -125,6 +158,21 @@ export default function App() {
             />
           )}
         </>
+      )}
+
+      {airStation && (
+        <AirIndexModal
+          station={airStation}
+          onClose={closeAirIndex}
+          lang={lang}
+        />
+      )}
+
+      {showLimits && (
+        <LimitsModal
+          lang={lang}
+          onClose={() => setShowLimits(false)}
+        />
       )}
     </div>
   );
